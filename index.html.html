@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-디저트 선택속성 IPA 설문조사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2B2621;
+    --ink-soft:#6b6259;
+    --bg:#F3F1E7;
+    --paper:#FFFDF8;
+    --line:#E4DFD0;
+    --celadon:#3F5E56;
+    --celadon-soft:#DCE6DF;
+    --omija:#8C2F39;
+    --omija-soft:#F3DEDF;
+    --gold:#B98A3A;
+    --radius:14px;
+    --shadow: 0 2px 10px rgba(43,38,33,0.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans KR', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:80px;
+  }
+  h1,h2,h3{ font-family:'Noto Serif KR', serif; margin:0; }
+
+  /* progress bar */
+  #progress-track{
+    position:sticky; top:0; left:0; width:100%; height:4px;
+    background:var(--line); z-index:50;
+  }
+  #progress-fill{
+    height:100%; width:0%; background:linear-gradient(90deg,var(--omija),var(--gold));
+    transition:width .15s ease;
+  }
+
+  .wrap{ max-width:720px; margin:0 auto; padding:0 16px; }
+
+  /* header */
+  header.hero{
+    padding:36px 16px 28px; text-align:center;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(140,47,57,0.06), transparent 40%),
+      radial-gradient(circle at 80% 0%, rgba(63,94,86,0.08), transparent 45%),
+      var(--bg);
+  }
+  .eyebrow{
+    display:inline-block; font-size:12px; letter-spacing:.14em; font-weight:700;
+    color:var(--omija); text-transform:uppercase; margin-bottom:10px;
+  }
+  header.hero h1{ font-size:23px; color:var(--ink); font-weight:700; line-height:1.4; }
+  header.hero p.sub{ margin:10px auto 0; max-width:480px; font-size:13.5px; color:var(--ink-soft); }
+  .meta-row{
+    display:flex; justify-content:center; gap:18px; margin-top:16px; flex-wrap:wrap;
+    font-size:12.5px; color:var(--celadon); font-weight:500;
+  }
+  .meta-row span{ display:flex; align-items:center; gap:5px; }
+  .dot-motif{
+    width:100%; height:14px; margin:0 auto; opacity:.55;
+  }
+
+  /* cards */
+  .card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:20px 18px; margin:16px 0;
+  }
+  .info-card{
+    background:var(--celadon-soft); border:1px solid #c9d8cf; border-radius:var(--radius);
+    padding:16px 18px; margin:16px 0; font-size:13.5px; color:#2c453d;
+  }
+  .info-card b{ color:var(--celadon); }
+  .consent-card{
+    background:var(--omija-soft); border:1px solid #e3c3c6; border-radius:var(--radius);
+    padding:16px 18px; margin:16px 0;
+  }
+
+  section.block{ margin-top:34px; }
+  .sec-head{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:4px;
+  }
+  .sec-num{
+    font-family:'Noto Serif KR',serif; font-size:15px; color:var(--omija); font-weight:700;
+  }
+  .sec-title{ font-size:17px; font-weight:700; color:var(--ink); }
+  .sec-desc{ font-size:12.5px; color:var(--ink-soft); margin:6px 0 14px; }
+
+  .divider{
+    display:flex; justify-content:center; gap:6px; margin:28px 0; opacity:.5;
+  }
+  .divider span{ width:4px; height:4px; border-radius:50%; background:var(--gold); }
+
+  /* question blocks (section I, III, V) */
+  .q{
+    padding:16px 0; border-bottom:1px solid var(--line);
+  }
+  .q:last-child{ border-bottom:none; }
+  .q-text{ font-size:14.5px; font-weight:500; margin-bottom:10px; }
+  .q-text .req{ color:var(--omija); font-size:12px; margin-left:4px; }
+  .options{ display:flex; flex-wrap:wrap; gap:8px; }
+  .opt-pill{
+    position:relative;
+  }
+  .opt-pill input{ position:absolute; opacity:0; width:1px; height:1px; }
+  .opt-pill label{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:9px 14px; border:1px solid var(--line); border-radius:999px;
+    font-size:13px; color:var(--ink); cursor:pointer; background:#fff;
+    transition:all .15s ease; user-select:none;
+  }
+  .opt-pill input:checked + label{
+    background:var(--celadon); border-color:var(--celadon); color:#fff; font-weight:600;
+  }
+  .opt-pill input:focus-visible + label{ outline:2px solid var(--gold); outline-offset:2px; }
+  .etc-input{
+    margin-top:8px; width:100%; max-width:280px; padding:8px 10px;
+    border:1px solid var(--line); border-radius:8px; font-size:13px; font-family:inherit;
+    background:#fdfcf9;
+  }
+  .etc-input:disabled{ background:#f1efe8; color:#bbb; }
+
+  textarea.free{
+    width:100%; min-height:110px; border:1px solid var(--line); border-radius:10px;
+    padding:12px; font-family:inherit; font-size:13.5px; resize:vertical; background:#fdfcf9;
+  }
+
+  /* IPA legend */
+  .legend{
+    display:flex; gap:14px; flex-wrap:wrap; font-size:11.5px; color:var(--ink-soft);
+    background:#F8F5EC; border:1px dashed var(--line); border-radius:10px; padding:10px 12px; margin-bottom:14px;
+  }
+  .legend b{ color:var(--ink); }
+
+  .group-label{
+    font-size:12px; font-weight:700; color:var(--omija); letter-spacing:.03em;
+    margin:22px 0 8px; padding-left:2px;
+    border-left:3px solid var(--omija); padding-left:8px;
+  }
+  .group-label:first-of-type{ margin-top:6px; }
+
+  /* paired IPA item */
+  .ipa-item{
+    background:#fff; border:1px solid var(--line); border-radius:12px;
+    padding:14px 14px 16px; margin-bottom:10px;
+  }
+  .ipa-item .ipa-no{ font-size:11px; color:var(--ink-soft); font-weight:600; }
+  .ipa-item .ipa-text{
+    font-size:14.5px; font-weight:600; text-align:center; margin:4px 0 12px;
+    line-height:1.45;
+  }
+  .ipa-scales{
+    display:flex; align-items:flex-start; justify-content:center; gap:10px;
+    flex-wrap:wrap;
+  }
+  .scale-group{
+    flex:1 1 210px; max-width:260px; min-width:190px;
+  }
+  .scale-group .scale-label{
+    font-size:11px; font-weight:700; text-align:center; margin-bottom:6px;
+    display:flex; align-items:center; justify-content:center; gap:4px;
+  }
+  .scale-group.importance .scale-label{ color:var(--celadon); }
+  .scale-group.satisfaction .scale-label{ color:var(--omija); }
+  .scale-row{
+    display:flex; justify-content:space-between; gap:4px;
+  }
+  .scale-opt{ position:relative; flex:1; text-align:center; }
+  .scale-opt input{ position:absolute; opacity:0; width:1px; height:1px; }
+  .scale-opt label{
+    display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; user-select:none;
+  }
+  .scale-opt .bubble{
+    width:30px; height:30px; border-radius:50%; border:1.5px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600;
+    color:var(--ink-soft); background:#fff; transition:all .15s ease; margin:0 auto;
+  }
+  .scale-group.importance .scale-opt input:checked + label .bubble{
+    background:var(--celadon); border-color:var(--celadon); color:#fff;
+  }
+  .scale-group.satisfaction .scale-opt input:checked + label .bubble{
+    background:var(--omija); border-color:var(--omija); color:#fff;
+  }
+  .scale-opt input:focus-visible + label .bubble{ outline:2px solid var(--gold); outline-offset:2px; }
+  .scale-endcap{ font-size:9px; color:var(--ink-soft); margin-top:2px; white-space:nowrap; }
+
+  .center-divider{
+    width:1px; align-self:stretch; background:var(--line); margin-top:20px;
+    display:block;
+  }
+
+  @media (max-width:480px){
+    .ipa-scales{ flex-direction:column; align-items:stretch; }
+    .center-divider{ display:none; }
+    .scale-group{ max-width:none; }
+  }
+
+  /* single scale (section III) */
+  .single-scale .ipa-scales{ justify-content:center; }
+  .single-scale .scale-group{ flex:0 1 320px; }
+
+  /* submit */
+  .submit-wrap{ text-align:center; margin-top:30px; }
+  #submitBtn{
+    background:var(--omija); color:#fff; border:none; padding:14px 40px;
+    border-radius:999px; font-size:15px; font-weight:700; cursor:pointer;
+    box-shadow:0 4px 14px rgba(140,47,57,0.25); font-family:inherit;
+  }
+  #submitBtn:hover{ background:#742530; }
+  .hint{ font-size:12px; color:var(--ink-soft); margin-top:10px; }
+
+  .hidden{ display:none !important; }
+  .unanswered{ outline:2px solid var(--omija); outline-offset:3px; border-radius:12px; }
+
+  #end-screen, #thanks-screen{
+    text-align:center; padding:70px 20px;
+  }
+  #end-screen h2, #thanks-screen h2{ font-size:20px; margin-bottom:10px; }
+  #end-screen p, #thanks-screen p{ color:var(--ink-soft); font-size:13.5px; }
+
+  footer{ text-align:center; font-size:11.5px; color:var(--ink-soft); margin-top:40px; padding:0 20px; }
+</style>
+</head>
+<body>
+
+<div id="progress-track"><div id="progress-fill"></div></div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Importance – Performance Analysis</span>
+    <h1>K-디저트 선택속성<br>중요도-만족도(IPA) 설문조사</h1>
+    <p class="sub">안녕하십니까? 본 설문은 소비자가 K-디저트를 선택할 때 중요하게 고려하는 속성과 실제 이용 후 만족도를 파악하기 위한 연구입니다. 응답 내용은 통계법에 따라 익명으로 처리되며 학술적 목적으로만 사용됩니다. 정답은 없으므로 최근의 실제 경험을 바탕으로 솔직하게 응답해 주시기 바랍니다.</p>
+    <div class="meta-row">
+      <span>⏱ 예상 소요시간 약 8~10분</span>
+      <span>연구자 : ______</span>
+      <span>문의 : ______</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="info-card">
+    <b>조사에서 사용하는 K-디저트의 의미</b><br>
+    본 조사에서 K-디저트란 한국의 전통 디저트 또는 한국의 식재료·맛·문화적 이미지를 활용해 현대적으로 재해석한 디저트를 의미합니다.
+    예: 떡, 약과, 한과, 강정, 엿, 정과, 전통차·식혜·수정과, 인절미·쑥·흑임자·팥·유자·오미자 등을 활용한 케이크·쿠키·빙수·음료 등.
+    한국적 요소가 없는 일반 서양식 디저트는 제외합니다.
+  </div>
+
+  <div class="consent-card">
+    <b>응답 기준</b><br>
+    <span style="font-size:13.5px;">아래 문항은 귀하가 <b>최근 6개월 이내</b>에 가장 최근에 구매하거나 섭취한 K-디저트 <b>한 가지</b>를 떠올려 응답해 주십시오.</span>
+    <div class="options" style="margin-top:12px;">
+      <div class="opt-pill">
+        <input type="checkbox" id="consent" name="consent">
+        <label for="consent">☐ 위 설명을 이해하였으며 자발적으로 조사 참여에 동의합니다.</label>
+      </div>
+    </div>
+  </div>
+
+  <form id="surveyForm">
+
+  <!-- ============ SECTION I ============ -->
+  <section class="block" id="sec1">
+    <div class="sec-head"><span class="sec-num">Ⅰ</span><span class="sec-title">K-디저트 구매 및 섭취 경험</span></div>
+    <div class="card" id="section1-body"></div>
+  </section>
+
+  <div id="end-screen" class="hidden">
+    <h2>설문에 참여해 주셔서 감사합니다.</h2>
+    <p>최근 6개월 이내 K-디저트 구매·섭취 경험이 없어 설문이 종료되었습니다.</p>
+  </div>
+
+  <div id="rest-of-survey">
+
+  <!-- ============ SECTION II ============ -->
+  <section class="block" id="sec2">
+    <div class="sec-head"><span class="sec-num">Ⅱ</span><span class="sec-title">K-디저트 선택속성의 중요도와 만족도</span></div>
+    <div class="sec-desc">최근에 경험한 K-디저트 한 가지를 기준으로, 구매·선택 전 중요하게 생각한 정도(중요도)와 실제 경험 후 만족한 정도(만족도)를 모두 표시해 주십시오.</div>
+    <div class="legend">
+      <div><b>중요도</b> 1 전혀 중요하지 않다 · 2 중요하지 않다 · 3 보통이다 · 4 중요하다 · 5 매우 중요하다</div>
+      <div><b>만족도</b> 1 전혀 만족하지 않는다 · 2 만족하지 않는다 · 3 보통이다 · 4 만족한다 · 5 매우 만족한다</div>
+    </div>
+    <div id="section2-body"></div>
+  </section>
+
+  <div class="divider"><span></span><span></span><span></span></div>
+
+  <!-- ============ SECTION III ============ -->
+  <section class="block" id="sec3">
+    <div class="sec-head"><span class="sec-num">Ⅲ</span><span class="sec-title">전반적 평가 및 행동의도</span></div>
+    <div class="sec-desc">최근에 경험한 K-디저트에 대한 생각과 가장 가까운 번호에 표시해 주십시오.</div>
+    <div class="legend">
+      <div>1 전혀 그렇지 않다 · 2 그렇지 않다 · 3 보통이다 · 4 그렇다 · 5 매우 그렇다</div>
+    </div>
+    <div id="section3-body"></div>
+  </section>
+
+  <div class="divider"><span></span><span></span><span></span></div>
+
+  <!-- ============ SECTION IV ============ -->
+  <section class="block" id="sec4">
+    <div class="sec-head"><span class="sec-num">Ⅳ</span><span class="sec-title">K-디저트에 대한 추가 의견</span></div>
+    <div class="card">
+      <div class="q-text">K-디저트에서 개선되었으면 하는 점이나 새롭게 개발되기를 바라는 제품이 있다면 자유롭게 적어주십시오.</div>
+      <textarea class="free" name="opinion" placeholder="자유롭게 의견을 남겨주세요."></textarea>
+    </div>
+  </section>
+
+  <div class="divider"><span></span><span></span><span></span></div>
+
+  <!-- ============ SECTION V ============ -->
+  <section class="block" id="sec5">
+    <div class="sec-head"><span class="sec-num">Ⅴ</span><span class="sec-title">일반적 특성</span></div>
+    <div class="sec-desc">다음은 통계적 분석을 위한 문항입니다. 해당하는 항목에 표시해 주십시오.</div>
+    <div class="card" id="section5-body"></div>
+  </section>
+
+  <div class="submit-wrap">
+    <button type="submit" id="submitBtn">설문 제출하기</button>
+    <div class="hint">미응답 문항이 있으면 자동으로 표시해 드립니다.</div>
+  </div>
+
+  </div><!-- /rest-of-survey -->
+
+  </form>
+
+  <div id="thanks-screen" class="hidden">
+    <h2>🙏 설문에 응답해 주셔서 감사합니다.</h2>
+    <p>소중한 의견은 K-디저트 연구를 위해 유익하게 사용하겠습니다.</p>
+  </div>
+
+  <footer>K-디저트 선택속성 IPA 설문 · 온라인 응답용</footer>
+</div>
+
+<script>
+(function(){
+
+  const S1 = document.getElementById('section1-body');
+  const S2 = document.getElementById('section2-body');
+  const S3 = document.getElementById('section3-body');
+  const S5 = document.getElementById('section5-body');
+
+  function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstElementChild; }
+
+  // ---------- generic single/multi choice question ----------
+  function renderChoiceQ(container, opts){
+    // opts: {name, text, required, multi, choices:[{value,label,etc}]}
+    const q = document.createElement('div');
+    q.className='q';
+    q.dataset.name = opts.name;
+    q.dataset.required = opts.required ? '1':'0';
+    q.innerHTML = `<div class="q-text">${opts.text}${opts.required?'<span class="req">필수</span>':''}${opts.multi?' <span style="color:var(--ink-soft);font-weight:400;font-size:12px;">(복수응답 가능)</span>':''}</div>`;
+    const optionsWrap = document.createElement('div');
+    optionsWrap.className='options';
+    opts.choices.forEach((c,i)=>{
+      const id = opts.name+'_'+i;
+      const pill = document.createElement('div');
+      pill.className='opt-pill';
+      const inputType = opts.multi ? 'checkbox':'radio';
+      pill.innerHTML = `<input type="${inputType}" id="${id}" name="${opts.name}${opts.multi?('_'+i):''}" value="${c.value}">
+        <label for="${id}">${c.label}</label>`;
+      if(opts.multi){ pill.querySelector('input').dataset.qname = opts.name; }
+      optionsWrap.appendChild(pill);
+      if(c.etc){
+        const etcInput = document.createElement('input');
+        etcInput.type='text'; etcInput.className='etc-input'; etcInput.disabled=true;
+        etcInput.placeholder='내용을 입력해 주세요';
+        etcInput.name = opts.name+'_etc';
+        const input = pill.querySelector('input');
+        input.addEventListener('change', ()=>{
+          // for radio groups, disable other etc inputs sharing same name group
+          etcInput.disabled = !input.checked;
+          if(input.checked) etcInput.focus();
+        });
+        q.appendChild(optionsWrap);
+        q.appendChild(etcInput);
+        return;
+      }
+    });
+    if(!q.contains(optionsWrap)) q.appendChild(optionsWrap);
+    container.appendChild(q);
+  }
+
+  // ---------- Section I ----------
+  renderChoiceQ(S1,{name:'q1_experience', required:true,
+    text:'1. 최근 6개월 이내에 K-디저트를 구매하거나 섭취한 경험이 있습니까?',
+    choices:[{value:'예',label:'예 → 계속 응답'},{value:'아니요',label:'아니요 → 설문 종료'}]});
+
+  renderChoiceQ(S1,{name:'q2_type', required:true,
+    text:'2. 가장 최근에 경험한 K-디저트는 무엇입니까? (한 가지만 선택)',
+    choices:[
+      {value:'떡류',label:'떡류'},{value:'약과·유밀과',label:'약과·유밀과'},
+      {value:'한과·강정·산자',label:'한과·강정·산자'},{value:'엿·정과',label:'엿·정과'},
+      {value:'전통음료',label:'전통음료'},{value:'빙수·팥디저트',label:'빙수·팥 디저트'},
+      {value:'베이커리·케이크',label:'한국 식재료 활용 베이커리·케이크'},
+      {value:'쿠키·스낵',label:'한국 식재료 활용 쿠키·스낵'},
+      {value:'기타',label:'기타',etc:true}
+    ]});
+
+  renderChoiceQ(S1,{name:'q3_place', required:true,
+    text:'3. 위 제품을 어디에서 구매하거나 섭취했습니까? (한 가지만 선택)',
+    choices:[
+      {value:'전문점·카페',label:'전문점·카페'},{value:'백화점·프리미엄매장',label:'백화점·프리미엄 매장'},
+      {value:'대형마트·슈퍼',label:'대형마트·슈퍼'},{value:'편의점',label:'편의점'},
+      {value:'전통시장',label:'전통시장'},{value:'온라인·배달앱',label:'온라인 쇼핑몰·배달앱'},
+      {value:'관광지·문화시설',label:'관광지·문화시설'},{value:'선물로받음',label:'선물로 받음'},
+      {value:'기타',label:'기타',etc:true}
+    ]});
+
+  renderChoiceQ(S1,{name:'q4_freq', required:true,
+    text:'4. 최근 6개월간 K-디저트 섭취 빈도는 어느 정도입니까?',
+    choices:[
+      {value:'월1회미만',label:'월 1회 미만'},{value:'월1~3회',label:'월 1~3회'},
+      {value:'주1회',label:'주 1회'},{value:'주2~3회',label:'주 2~3회'},{value:'주4회이상',label:'주 4회 이상'}
+    ]});
+
+  renderChoiceQ(S1,{name:'q5_price', required:true,
+    text:'5. 가장 최근 경험한 K-디저트 1회 구매금액은 얼마입니까?',
+    choices:[
+      {value:'5천원미만',label:'5천 원 미만'},{value:'5천~1만',label:'5천 원 이상~1만 원 미만'},
+      {value:'1만~2만',label:'1만 원 이상~2만 원 미만'},{value:'2만~3만',label:'2만 원 이상~3만 원 미만'},
+      {value:'3만이상',label:'3만 원 이상'}
+    ]});
+
+  renderChoiceQ(S1,{name:'q6_purpose', required:true, multi:true,
+    text:'6. K-디저트를 주로 구매하거나 섭취하는 목적은 무엇입니까?',
+    choices:[
+      {value:'일상간식',label:'일상 간식'},{value:'식후디저트',label:'식후 디저트'},
+      {value:'카페이용',label:'카페 이용'},{value:'선물',label:'선물'},
+      {value:'관광문화체험',label:'관광·문화체험'},{value:'SNS촬영공유',label:'SNS 촬영·공유'},
+      {value:'건강한간식선택',label:'건강한 간식 선택'},{value:'기타',label:'기타',etc:true}
+    ]});
+
+  renderChoiceQ(S1,{name:'q7_info', required:true, multi:true,
+    text:'7. K-디저트 정보를 주로 어디에서 얻습니까?',
+    choices:[
+      {value:'SNS블로그영상',label:'SNS·블로그·영상'},{value:'온라인배달앱',label:'온라인 쇼핑몰·배달앱'},
+      {value:'매장추천',label:'매장 진열·직원 추천'},{value:'가족친구추천',label:'가족·친구 추천'},
+      {value:'TV신문잡지',label:'TV·신문·잡지'},{value:'관광공공기관',label:'관광·공공기관 정보'},
+      {value:'기타',label:'기타',etc:true}
+    ]});
+
+  // ---------- Section II : paired IPA items ----------
+  const impLabels = ['전혀\n중요X','중요\n안함','보통','중요함','매우\n중요'];
+  const satLabels = ['전혀\n불만족','불만족','보통','만족','매우\n만족'];
+
+  function renderIpaItem(container, no, group, text, showGroupLabel){
+    if(showGroupLabel){
+      container.appendChild(el(`<div class="group-label">${group}</div>`));
+    }
+    const item = document.createElement('div');
+    item.className='ipa-item';
+    item.innerHTML = `<div class="ipa-no">문항 ${no}</div><div class="ipa-text">${text}</div>`;
+    const scales = document.createElement('div');
+    scales.className='ipa-scales';
+    scales.appendChild(buildScaleGroup('imp_'+no,'importance','중요도','#3F5E56'));
+    const cd = document.createElement('span'); cd.className='center-divider';
+    scales.appendChild(cd);
+    scales.appendChild(buildScaleGroup('sat_'+no,'satisfaction','만족도','#8C2F39'));
+    item.appendChild(scales);
+    item.dataset.required='1';
+    item.dataset.pairNo = no;
+    container.appendChild(item);
+  }
+
+  function buildScaleGroup(name, cls, labelText, color){
+    const g = document.createElement('div');
+    g.className = 'scale-group '+cls;
+    g.innerHTML = `<div class="scale-label">${labelText}</div>`;
+    const row = document.createElement('div');
+    row.className='scale-row';
+    for(let i=1;i<=5;i++){
+      const id = name+'_'+i;
+      const opt = document.createElement('div');
+      opt.className='scale-opt';
+      opt.innerHTML = `<input type="radio" id="${id}" name="${name}" value="${i}">
+        <label for="${id}"><span class="bubble">${i}</span></label>`;
+      row.appendChild(opt);
+    }
+    g.appendChild(row);
+    return g;
+  }
+
+  const section2Data = [
+    {group:'제품 특성', items:[
+      [1,'전반적으로 맛이 좋다'],[2,'단맛의 정도가 적절하다'],[3,'제품 특성에 적합한 식감이다'],
+      [4,'향이 좋다'],[5,'외관과 색이 먹음직스럽다'],[6,'제품이 신선하다'],
+      [7,'전반적인 품질이 우수하다'],[8,'구매할 때마다 품질이 일정하다']
+    ]},
+    {group:'안전·정보', items:[
+      [9,'위생적으로 제조·판매된다'],[10,'안전하게 섭취할 수 있는 제품이다'],
+      [11,'원재료의 품질이 우수하다'],[12,'건강을 고려한 제품이다'],
+      [13,'당과 지방 함량에 대한 부담이 적다'],[14,'원재료와 영양정보가 충분히 표시되어 있다'],
+      [15,'원재료의 원산지가 명확하게 표시되어 있다'],[16,'제조일자와 소비기한이 명확하게 표시되어 있다']
+    ]},
+    {group:'구매 조건', items:[
+      [17,'가격이 적절하다'],[18,'가격에 비해 제품의 품질이 우수하다'],[19,'구매하기 쉽다'],
+      [20,'판매처와 판매자를 신뢰할 수 있다'],[21,'제품 종류와 맛의 선택 폭이 넓다'],[22,'브랜드를 신뢰할 수 있다']
+    ]},
+    {group:'포장·상품성', items:[
+      [23,'포장 단위와 양이 적절하다'],[24,'포장 디자인이 매력적이다'],
+      [25,'보관과 휴대가 편리하다'],[26,'선물용으로 적합하다']
+    ]}
+  ];
+
+  section2Data.forEach(g=>{
+    g.items.forEach((it,idx)=>{
+      renderIpaItem(S2, it[0], g.group, it[1], idx===0);
+    });
+  });
+
+  // ---------- Section III : single scale ----------
+  const section3Data = [
+    [1,'전반적으로 이 K-디저트에 만족한다.'],
+    [2,'이 K-디저트의 품질은 기대한 수준이었다.'],
+    [3,'기회가 된다면 이 K-디저트를 다시 구매하거나 섭취할 것이다.'],
+    [4,'이 K-디저트를 다른 사람에게 추천할 의향이 있다.'],
+    [5,'앞으로 K-디저트를 다른 일반 디저트보다 우선적으로 선택할 의향이 있다.']
+  ];
+  section3Data.forEach(it=>{
+    const item = document.createElement('div');
+    item.className='ipa-item single-scale';
+    item.dataset.required='1';
+    item.innerHTML = `<div class="ipa-no">문항 ${it[0]}</div><div class="ipa-text">${it[1]}</div>`;
+    const scales = document.createElement('div');
+    scales.className='ipa-scales';
+    scales.appendChild(buildScaleGroup('agree_'+it[0],'importance','',''));
+    scales.querySelector('.scale-label').remove();
+    item.appendChild(scales);
+    S3.appendChild(item);
+  });
+
+  // ---------- Section V ----------
+  renderChoiceQ(S5,{name:'d1_gender', required:true, text:'1. 성별',
+    choices:[{value:'여성',label:'여성'},{value:'남성',label:'남성'},{value:'응답안함',label:'응답하지 않음'}]});
+  renderChoiceQ(S5,{name:'d2_age', required:true, text:'2. 연령',
+    choices:[{value:'19이하',label:'19세 이하'},{value:'20대',label:'20대'},{value:'30대',label:'30대'},
+      {value:'40대',label:'40대'},{value:'50대',label:'50대'},{value:'60대이상',label:'60대 이상'}]});
+  renderChoiceQ(S5,{name:'d3_nation', required:true, text:'3. 국적',
+    choices:[{value:'한국',label:'한국'},{value:'베트남',label:'베트남'},{value:'기타',label:'기타',etc:true}]});
+  renderChoiceQ(S5,{name:'d4_residence', required:true, text:'4. 현재 거주 지역',
+    choices:[{value:'한국',label:'한국'},{value:'베트남',label:'베트남'},{value:'기타',label:'기타 국가',etc:true}]});
+  renderChoiceQ(S5,{name:'d5_period', required:false, text:'5. 한국 거주 기간 (외국인만 응답)',
+    choices:[{value:'1년미만',label:'1년 미만'},{value:'1~3년',label:'1~3년 미만'},
+      {value:'3~5년',label:'3~5년 미만'},{value:'5년이상',label:'5년 이상'},{value:'해당없음',label:'해당 없음'}]});
+  renderChoiceQ(S5,{name:'d6_edu', required:true, text:'6. 최종 학력',
+    choices:[{value:'고졸이하',label:'고등학교 졸업 이하'},{value:'전문대',label:'전문대학 재학·졸업'},
+      {value:'4년제',label:'4년제 대학 재학·졸업'},{value:'대학원',label:'대학원 재학·졸업'}]});
+  renderChoiceQ(S5,{name:'d7_job', required:true, text:'7. 직업',
+    choices:[{value:'학생',label:'학생'},{value:'사무관리직',label:'사무·관리직'},{value:'전문직',label:'전문직'},
+      {value:'서비스판매직',label:'서비스·판매직'},{value:'자영업',label:'자영업'},{value:'주부',label:'주부'},
+      {value:'무직',label:'무직'},{value:'기타',label:'기타',etc:true}]});
+  renderChoiceQ(S5,{name:'d8_income', required:true, text:'8. 월평균 가구소득',
+    choices:[{value:'200미만',label:'200만 원 미만'},{value:'200~399',label:'200만~399만 원'},
+      {value:'400~599',label:'400만~599만 원'},{value:'600~799',label:'600만~799만 원'},
+      {value:'800이상',label:'800만 원 이상'},{value:'응답안함',label:'응답하지 않음'}]});
+  renderChoiceQ(S5,{name:'d9_interest', required:true, text:'9. K-디저트에 대한 평소 관심 정도',
+    choices:[{value:'전혀없음',label:'전혀 관심 없다'},{value:'없음',label:'관심 없다'},{value:'보통',label:'보통이다'},
+      {value:'있음',label:'관심 있다'},{value:'매우있음',label:'매우 관심 있다'}]});
+
+  // ---------- Q1 branching ----------
+  const restOfSurvey = document.getElementById('rest-of-survey');
+  const endScreen = document.getElementById('end-screen');
+  document.querySelectorAll('input[name="q1_experience"]').forEach(inp=>{
+    inp.addEventListener('change', ()=>{
+      if(inp.value==='아니요' && inp.checked){
+        restOfSurvey.classList.add('hidden');
+        endScreen.classList.remove('hidden');
+      } else if(inp.value==='예' && inp.checked){
+        restOfSurvey.classList.remove('hidden');
+        endScreen.classList.add('hidden');
+      }
+    });
+  });
+
+  // ---------- progress bar ----------
+  window.addEventListener('scroll', ()=>{
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const height = h.scrollHeight - h.clientHeight;
+    const pct = height>0 ? (scrolled/height)*100 : 0;
+    document.getElementById('progress-fill').style.width = pct+'%';
+  });
+
+  // ---------- submit + validation ----------
+  const form = document.getElementById('surveyForm');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    if(!document.getElementById('consent').checked){
+      alert('설문 참여에 동의해 주셔야 응답을 시작할 수 있습니다.');
+      document.getElementById('consent').scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+
+    document.querySelectorAll('.unanswered').forEach(n=>n.classList.remove('unanswered'));
+    let firstUnanswered = null;
+
+    // required choice questions
+    document.querySelectorAll('.q[data-required="1"]').forEach(q=>{
+      const name = q.dataset.name;
+      const checked = q.querySelectorAll('input:checked');
+      if(checked.length===0){
+        q.classList.add('unanswered');
+        if(!firstUnanswered) firstUnanswered=q;
+      }
+    });
+
+    // required IPA paired items
+    document.querySelectorAll('.ipa-item[data-required="1"][data-pair-no]').forEach(item=>{
+      const no = item.dataset.pairNo;
+      const impChecked = document.querySelector('input[name="imp_'+no+'"]:checked');
+      const satChecked = document.querySelector('input[name="sat_'+no+'"]:checked');
+      if(!impChecked || !satChecked){
+        item.classList.add('unanswered');
+        if(!firstUnanswered) firstUnanswered=item;
+      }
+    });
+
+    // required single scale (section III)
+    document.querySelectorAll('#section3-body .ipa-item[data-required="1"]').forEach((item,idx)=>{
+      const no = idx+1;
+      const checked = document.querySelector('input[name="agree_'+no+'"]:checked');
+      if(!checked){
+        item.classList.add('unanswered');
+        if(!firstUnanswered) firstUnanswered=item;
+      }
+    });
+
+    if(firstUnanswered){
+      firstUnanswered.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+
+    submitToSheet();
+  });
+
+  // ---------- collect all answers into a flat object ----------
+  function collectFormData(){
+    const data = {};
+    data['timestamp'] = new Date().toISOString();
+    data['consent'] = document.getElementById('consent').checked ? 'Y' : 'N';
+
+    // all checked radios (single-choice questions + every IPA scale item)
+    document.querySelectorAll('input[type="radio"]:checked').forEach(r=>{
+      data[r.name] = r.value;
+    });
+
+    // multi-select checkboxes, grouped by their shared data-qname
+    const groups = {};
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb=>{
+      if(cb.id==='consent') return;
+      const qname = cb.dataset.qname;
+      if(!qname) return;
+      if(!groups[qname]) groups[qname] = [];
+      groups[qname].push(cb.value);
+    });
+    Object.keys(groups).forEach(k=>{ data[k] = groups[k].join(', '); });
+
+    // "기타" free-text inputs, only if filled in
+    document.querySelectorAll('.etc-input').forEach(inp=>{
+      if(inp.value && inp.value.trim()) data[inp.name] = inp.value.trim();
+    });
+
+    // open-ended opinion
+    const opinion = document.querySelector('textarea[name="opinion"]');
+    if(opinion) data['opinion'] = opinion.value.trim();
+
+    return data;
+  }
+
+  // ====== ⬇⬇ Google Apps Script 웹 앱 URL을 여기에 붙여넣으세요 ⬇⬇ ======
+  const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzU-ThMJO26iZyAB-N50khn36bCtbFDBPH1rF8apNhjzsNDcan0LxxfDszlKQ3Pb2te/exec";
+  // =======================================================================
+
+  function submitToSheet(){
+    const data = collectFormData();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = '제출 중...';
+
+    if(SHEET_WEBAPP_URL.indexOf('PASTE_YOUR') === 0){
+      // URL이 아직 연결되지 않은 경우: 콘솔에 데이터만 출력하고 완료 화면 표시
+      console.warn('SHEET_WEBAPP_URL이 설정되지 않았습니다. 아래 데이터가 저장되지 않았습니다:', data);
+      showThanks();
+      return;
+    }
+
+    const body = new URLSearchParams(data);
+    fetch(SHEET_WEBAPP_URL, { method:'POST', mode:'no-cors', body })
+      .then(()=> showThanks())
+      .catch(()=>{
+        btn.disabled = false;
+        btn.textContent = '설문 제출하기';
+        alert('전송 중 문제가 발생했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.');
+      });
+  }
+
+  function showThanks(){
+    form.classList.add('hidden');
+    document.getElementById('thanks-screen').classList.remove('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+})();
+</script>
+
+</body>
+</html>
