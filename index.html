@@ -606,7 +606,7 @@
     item.innerHTML = `<div class="ipa-no">문항 ${no}</div><div class="ipa-text">${text}</div>`;
     const scales = document.createElement('div');
     scales.className='ipa-scales';
-    scales.appendChild(buildScaleGroup('imp_'+no,'importance','중요도(섭취 전)',impLabels));
+    scales.appendChild(buildScaleGroup('imp_'+no,'importance','중요도(선택 전)',impLabels));
     const cd = document.createElement('span'); cd.className='center-divider';
     scales.appendChild(cd);
     scales.appendChild(buildScaleGroup('sat_'+no,'satisfaction','만족도(섭취 후)',satLabels));
